@@ -1,0 +1,238 @@
+🚀 Zypharion – The Complete Guide
+Welcome to the ultimate tutorial for Zypharion – your powerful, all‑in‑one Discord bot.
+This guide covers every command, every setting, and every feature in detail.
+After reading this, you’ll be able to set up Zypharion perfectly for your server.
+
+1. 📥 Inviting the Bot & First Steps
+Invite Zypharion
+Use this link to add the bot to your server:
+
+text
+https://discord.com/api/oauth2/authorize?client_id=1522293031854805223&permissions=2199023255551&scope=bot%20applications.commands
+The required permissions include Administrator rights – you can adjust them later in your server settings.
+
+Check if the bot is online
+Once Zypharion joins, he will appear in your member list.
+Type /commands to see a full list of all available slash commands.
+
+2. ⚙️ Global Configuration with /setup
+The /setup command defines the admin role, team role, and the bot status channel.
+Only server administrators can use it.
+
+Command: /setup
+
+Parameters (all optional, but you’ll want to set them):
+
+admin_role – The role that can use all bot commands (including /setup, /shutdown, /permit, etc.).
+
+team_role – The role for your support team. Members with this role can manage tickets and use /embed-bot, but cannot change global settings.
+
+status_channel – A text channel where Zypharion will post a live status embed (🟢 Online / 🔴 Offline).
+
+Example:
+/setup admin_role:@Admin team_role:@Moderator status_channel:#bot-status
+
+After running the command, the bot will automatically send a status embed in the chosen channel, showing 🟢 Online.
+The team role is also used as a fallback in the Ticket and Application systems if you don’t set specific roles there.
+
+Resetting all settings:
+/resetup – Deletes all configuration files (global, ticket, application, permissions, counters) and reverts the bot to its default state. Use this if you want to start fresh.
+
+3. 🎫 Ticket System
+Zypharion’s ticket system lets users create private support channels via a dropdown menu. Each ticket type can have its own name, role, and category.
+
+3.1 Setting up Tickets with /ticket-setup
+Only server administrators can use this command.
+
+Command: /ticket-setup
+
+Required parameters:
+
+channel – The text channel where the ticket panel (dropdown) will be sent.
+
+category – The category under which all ticket channels will be created.
+
+Optional parameters (you can customize everything):
+
+panel_title – Title of the panel embed (default: 🎟️ Support‑Tickets).
+
+panel_description – Description text of the panel embed.
+
+ticket_title – Title of the welcome embed inside the ticket channel.
+
+ticket_description – Welcome message inside the ticket channel. Use {member} as placeholder for the user mention.
+
+type1 to type9 – Names of up to 9 different ticket types (e.g., “General Support”, “Bug Report”).
+
+role1 to role9 – Corresponding staff roles for each ticket type. Members with that role can see and manage tickets of that type. If no role is given, the global team_role is used as fallback.
+
+Example:
+/ticket-setup channel:#🎫-tickets category:Support type1:General Support role1:@Support-Team type2:Bug Report role2:@Dev-Team panel_title:Helpdesk
+
+After execution:
+
+The old panel message (if any) is deleted.
+
+A new dropdown panel is sent to #🎫-tickets.
+
+The config is saved; future ticket creations will use the settings.
+
+3.2 How Users Create Tickets
+Users click the dropdown in the panel and choose a ticket type.
+
+A private channel is created under the configured category.
+
+Only the user and the designated staff role (or fallback team role) can see the channel.
+
+A welcome embed is posted, and the staff role is pinged.
+
+Buttons appear: Close, Claim, Unclaim, Ping Staff.
+
+3.3 Managing Tickets as Staff
+Close – Opens a modal where you must enter a reason. The ticket channel is deleted after 10 seconds. The ticket creator receives a DM with the reason. (Only staff can close.)
+
+Claim – Assign the ticket to yourself (only staff).
+
+Unclaim – Release the ticket so another staff member can claim it.
+
+Ping Staff – Only the ticket creator can use this. It pings the responsible role, but has a 10‑minute cooldown.
+
+3.4 Additional Ticket Commands
+/embed-send [channel] – (Staff only) Re‑sends the ticket panel to the same or a different channel.
+
+/close – (Staff only) Closes the current ticket channel directly (opens the reason modal).
+
+3.5 Resetting Tickets
+/ticket-resetup – Deletes the panel message and resets all ticket settings (types, roles, category). Then you can run /ticket-setup again.
+
+4. 📝 Application System
+The application system lets users apply for staff positions via a DM questionnaire. You can customize questions, responses, and assign reviewers.
+
+4.1 Setting up Applications with /application-setup
+Only server administrators can use this.
+
+Command: /application-setup
+
+Required parameters:
+
+panel_channel – Channel where the application panel (dropdown) will be sent.
+
+target_channel – Channel where filled‑out applications will be posted for review.
+
+Optional parameters (everything can be tailored):
+
+required_role – A role a user must have to be able to submit an application.
+
+forbidden_role – A role that, if present, prevents the user from applying.
+
+type1 – Name of the application type (e.g., “Staff Application”).
+
+role1 – Role that is allowed to review (accept/deny) applications of this type. If not set, admins can review.
+
+panel_title – Title of the panel embed (default: 🌟 Bewerbungen).
+
+panel_description – Description text of the panel embed.
+
+submitted_title / submitted_description – DM sent to the applicant after they finish (use {user} as placeholder).
+
+accepted_title / accepted_description – DM when accepted (use {user}, {type}, {server}, {reason}).
+
+denied_title / denied_description – DM when denied.
+
+q1 to q10 – Up to 10 custom questions asked in the DM.
+
+Example:
+/application-setup panel_channel:#📩-apply target_channel:#📋-applications type1:Staff Application role1:@Management required_role:@Member panel_title:Join Our Team q1:Why do you want to join? q2:What is your timezone?
+
+After execution, a dropdown panel is posted in #📩-apply, and future applications will follow your settings.
+
+4.2 How Users Apply
+In the panel channel, users click the dropdown and select the application type.
+
+They receive a DM with the first question. They answer, the bot asks the next, until all questions are done.
+
+After each answer, the user sees how long they took (⏱️ *4.2 Sek.*).
+
+When finished, a summary (with times) is sent to the target_channel and the applicant gets a confirmation DM.
+
+In the review channel, staff members see ✅ Accept and ❌ Deny buttons.
+
+4.3 Reviewing Applications
+Accept – Opens a modal where the reviewer must enter a reason. The embed turns green and the applicant receives a DM with the reason.
+
+Deny – Same, but embed turns red and the applicant is notified.
+
+Only members with the designated review role (or admins) can use these buttons.
+
+4.4 Additional Application Commands
+/application-embed [channel] – Re‑sends the application panel to the given channel (or the saved one if omitted).
+
+/application-resetup – Deletes the panel and resets all application settings.
+
+5. 🛠️ Moderation & Utility Commands
+5.1 /clear
+Deletes a specified number of messages in the current channel.
+Usage: /clear amount:50
+
+amount – Number of messages (1‑100). Enter 0 to delete all messages (use with caution).
+
+Permissions: Admins, team members, and users explicitly granted with /permit clear can use it. If a user has a limit (set via /permit), they cannot delete more than that limit.
+
+5.2 /spam & /stop_spam
+/spam text:Hello – Starts a continuous spam of the given text in the current channel. The bot sends as fast as Discord allows, automatically handling rate limits.
+/stop_spam – Stops the spam in the current channel.
+
+Both commands require the user to be permitted (admins/team can always use them).
+
+Useful for testing, but please be mindful of other server members.
+
+5.3 /permit, /revoke, /permit_list
+Fine‑grained permission control for specific commands.
+
+/permit user:@Username command:clear limit:30 – Allows a user to use /clear, but only up to 30 messages at a time.
+
+/revoke user:@Username command:clear – Removes the permission for that command.
+
+/permit_list [user] – Shows all permissions. If no user is given, it lists all users with special permissions.
+
+Only server administrators can grant/revoke permissions.
+
+5.4 /embed-bot [channel]
+Sends or updates the bot’s status embed in the given channel. If no channel is provided, the one from /setup is used.
+
+This embed automatically switches between 🟢 Online and 🔴 Offline when the bot starts/stops.
+
+Team role (or admin) required.
+
+5.5 /shutdown
+Safely shuts down the bot.
+
+Sets the status embed to 🔴 Offline, sends a goodbye message, and then disconnects.
+
+Only server administrators can use this.
+
+6. 📋 Viewing All Commands
+Type /commands to see a beautifully formatted list of every slash command Zypharion offers, along with its description. This works for everyone.
+
+7. 🔁 Complete Reset
+/resetup (admin only) – Deletes all bot data, including:
+
+Global config (admin role, team role, status channel)
+
+Ticket config (panel, types, roles)
+
+Application config (panel, questions, texts)
+
+Permission overrides (/permit entries)
+
+Ticket counter
+
+After a reset, Zypharion is in its factory state – ready for a fresh setup.
+
+📞 Need Help or Want to Contact Us?
+Join our official Discord support server:
+🔗 https://discord.gg/abrRwKWAMK
+
+If you have any questions, suggestions, or need assistance with Zypharion, our team is there to help you!
+
+Enjoy your fully automated server! 💙
