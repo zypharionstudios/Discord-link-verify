@@ -1,27 +1,22 @@
-🚀 Zypharion – The Complete Guide
-Welcome to the ultimate tutorial for Zypharion – your powerful, all‑in‑one Discord bot.
-This guide covers every command, every setting, and every feature in detail.
-After reading this, you’ll be able to set up Zypharion perfectly for your server.
+📖 Complete Zypharion Bot Tutorial
+Welcome to the official Zypharion tutorial!
+This guide covers every single feature of the bot – from basic setup to advanced configuration. Whether you're a server owner, moderator, or developer, you'll find everything you need to run Zypharion like a pro.
 
-1. 📥 Inviting the Bot & First Steps
-Invite Zypharion
-Use this link to add the bot to your server:
+1. 📥 Inviting the Bot
+Use this invite link to add Zypharion to your server:
 
 text
 https://discord.com/api/oauth2/authorize?client_id=1522293031854805223&permissions=2199023255551&scope=bot%20applications.commands
-The required permissions include Administrator rights – you can adjust them later in your server settings.
+The bot requires Administrator permissions (you can restrict them later in the server settings).
 
-Check if the bot is online
-Once Zypharion joins, he will appear in your member list.
-Type /commands to see a full list of all available slash commands.
+After joining, Zypharion will appear in your member list. Type /commands to see all available commands.
 
 2. ⚙️ Global Configuration with /setup
-The /setup command defines the admin role, team role, and the bot status channel.
-Only server administrators can use it.
+The /setup command sets up the Admin Role, Team Role, and Status Channel. Only server administrators can use it.
 
 Command: /setup
 
-Parameters (all optional, but you’ll want to set them):
+Parameters (all optional):
 
 admin_role – The role that can use all bot commands (including /setup, /shutdown, /permit, etc.).
 
@@ -32,7 +27,7 @@ status_channel – A text channel where Zypharion will post a live status embed 
 Example:
 /setup admin_role:@Admin team_role:@Moderator status_channel:#bot-status
 
-After running the command, the bot will automatically send a status embed in the chosen channel, showing 🟢 Online.
+After execution, the bot automatically sends a status embed in the chosen channel showing 🟢 Online.
 The team role is also used as a fallback in the Ticket and Application systems if you don’t set specific roles there.
 
 Resetting all settings:
@@ -54,7 +49,7 @@ category – The category under which all ticket channels will be created.
 
 Optional parameters (you can customize everything):
 
-panel_title – Title of the panel embed (default: 🎟️ Support‑Tickets).
+panel_title – Title of the panel embed (default: 🎟️ Support Tickets).
 
 panel_description – Description text of the panel embed.
 
@@ -98,7 +93,7 @@ Unclaim – Release the ticket so another staff member can claim it.
 Ping Staff – Only the ticket creator can use this. It pings the responsible role, but has a 10‑minute cooldown.
 
 3.4 Additional Ticket Commands
-/embed-send [channel] – (Staff only) Re‑sends the ticket panel to the same or a different channel.
+/embed-send [channel] – (Admin only) Re‑sends the ticket panel to the same or a different channel.
 
 /close – (Staff only) Closes the current ticket channel directly (opens the reason modal).
 
@@ -129,7 +124,7 @@ type1 – Name of the application type (e.g., “Staff Application”).
 
 role1 – Role that is allowed to review (accept/deny) applications of this type. If not set, admins can review.
 
-panel_title – Title of the panel embed (default: 🌟 Bewerbungen).
+panel_title – Title of the panel embed (default: 🌟 Applications).
 
 panel_description – Description text of the panel embed.
 
@@ -151,7 +146,7 @@ In the panel channel, users click the dropdown and select the application type.
 
 They receive a DM with the first question. They answer, the bot asks the next, until all questions are done.
 
-After each answer, the user sees how long they took (⏱️ *4.2 Sek.*).
+After each answer, the user sees how long they took (⏱️ *4.2 sec.*).
 
 When finished, a summary (with times) is sent to the target_channel and the applicant gets a confirmation DM.
 
@@ -169,24 +164,58 @@ Only members with the designated review role (or admins) can use these buttons.
 
 /application-resetup – Deletes the panel and resets all application settings.
 
-5. 🛠️ Moderation & Utility Commands
-5.1 /clear
+5. 👋 Welcome System
+Automatically give new members a role and send a beautiful welcome message.
+
+5.1 Setting up Welcome with /welcome-setup
+Command: /welcome-setup (Admin only)
+
+Parameters:
+
+channel – The channel where the welcome message is sent.
+
+role – (Optional) A role that new members will receive.
+
+message_title – (Optional) Custom title for the welcome message.
+
+message_description – (Optional) Custom description (use {member} for mention).
+
+Example:
+/welcome-setup role:@Member channel:#welcome message_title:Welcome! message_description:Hey {member}, enjoy your stay!
+
+Resetting: /welcome-resetup deletes the welcome configuration.
+
+6. 💾 Save / Load / Delete Setups
+You can save your current configuration for tickets, applications, and welcome messages. This is perfect for seasonal changes or testing different settings.
+
+Command	Description
+/save-ticket-setup name:...	Save the current ticket configuration
+/load-ticket-setup name:...	Load a saved ticket configuration
+/delete-ticket-setup name:...	Delete a saved ticket configuration
+/save-application-setup name:...	Save the current application configuration
+/load-application-setup name:...	Load a saved application configuration
+/delete-application-setup name:...	Delete a saved application configuration
+/save-welcome-setup name:...	Save the current welcome configuration
+/load-welcome-setup name:...	Load a saved welcome configuration
+/delete-welcome-setup name:...	Delete a saved welcome configuration
+All saved setups are stored per server and can be restored at any time.
+
+7. 🛠️ Moderation & Utility Commands
+7.1 /clear
 Deletes a specified number of messages in the current channel.
 Usage: /clear amount:50
 
 amount – Number of messages (1‑100). Enter 0 to delete all messages (use with caution).
 
-Permissions: Admins, team members, and users explicitly granted with /permit clear can use it. If a user has a limit (set via /permit), they cannot delete more than that limit.
+Permissions: Admins only.
 
-5.2 /spam & /stop_spam
+7.2 /spam & /stop_spam
 /spam text:Hello – Starts a continuous spam of the given text in the current channel. The bot sends as fast as Discord allows, automatically handling rate limits.
 /stop_spam – Stops the spam in the current channel.
 
-Both commands require the user to be permitted (admins/team can always use them).
+Both commands require admin permissions.
 
-Useful for testing, but please be mindful of other server members.
-
-5.3 /permit, /revoke, /permit_list
+7.3 /permit, /revoke, /permit_list
 Fine‑grained permission control for specific commands.
 
 /permit user:@Username command:clear limit:30 – Allows a user to use /clear, but only up to 30 messages at a time.
@@ -197,24 +226,24 @@ Fine‑grained permission control for specific commands.
 
 Only server administrators can grant/revoke permissions.
 
-5.4 /embed-bot [channel]
+7.4 /embed-bot [channel]
 Sends or updates the bot’s status embed in the given channel. If no channel is provided, the one from /setup is used.
 
 This embed automatically switches between 🟢 Online and 🔴 Offline when the bot starts/stops.
 
-Team role (or admin) required.
+Admin only.
 
-5.5 /shutdown
+7.5 /shutdown
 Safely shuts down the bot.
 
 Sets the status embed to 🔴 Offline, sends a goodbye message, and then disconnects.
 
-Only server administrators can use this.
+Admin only.
 
-6. 📋 Viewing All Commands
+8. 📋 Viewing All Commands
 Type /commands to see a beautifully formatted list of every slash command Zypharion offers, along with its description. This works for everyone.
 
-7. 🔁 Complete Reset
+9. 🔁 Complete Reset
 /resetup (admin only) – Deletes all bot data, including:
 
 Global config (admin role, team role, status channel)
@@ -223,13 +252,15 @@ Ticket config (panel, types, roles)
 
 Application config (panel, questions, texts)
 
+Welcome config
+
 Permission overrides (/permit entries)
 
 Ticket counter
 
 After a reset, Zypharion is in its factory state – ready for a fresh setup.
 
-📞 Need Help or Want to Contact Us?
+📞 Need Help?
 Join our official Discord support server:
 🔗 https://discord.gg/abrRwKWAMK
 
